@@ -1,13 +1,15 @@
-export function loadPortfolio(type = "A") {
+export function loadPortfolio(name="A"){
 
-    const data = localStorage.getItem("portfolio_" + type);
+let data = localStorage.getItem("portfolio_"+name);
 
-    return data ? JSON.parse(data) : [];
+if(!data) return [];
+
+return JSON.parse(data);
 
 }
 
-export function savePortfolio(type = "A", portfolio) {
+export function savePortfolio(data,name="A"){
 
-    localStorage.setItem("portfolio_" + type, JSON.stringify(portfolio));
+localStorage.setItem("portfolio_"+name,JSON.stringify(data));
 
 }
