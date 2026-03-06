@@ -1,35 +1,45 @@
-document.addEventListener("DOMContentLoaded", function () {
+function importExcel() {
 
-    const fileInput = document.getElementById("excelFile");
+const fileInput = document.getElementById("excelFile");
 
-    if (!fileInput) return;
+if (!fileInput.files.length) {
+alert("Please select an Excel file");
+return;
+}
 
-    fileInput.addEventListener("change", function (e) {
+const file = fileInput.files[0];
+const reader = new FileReader();
 
-        const file = e.target.files[0];
+reader.onload = function(e) {
 
-        if (!file) return;
+const data = new Uint8Array(e.target.result);
+const workbook = XLSX.read(data, { type: "array" });
 
-        const reader = new FileReader();
+const sheetName = workbook.SheetNames[0];
+const worksheet = workbook.Sheets[sheetName];
 
-        reader.onload = function (event) {
+const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-            const data = new Uint8Array(event.target.result);
+let portfolio = JSON.parse(localStorage.getItem("portfolio")) || [];
 
-            const workbook = XLSX.read(data, { type: "array" });
+jsonData.forEach(row => {
 
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
-
-            const json = XLSX.utils.sheet_to_json(sheet);
-
-            console.log("Imported Excel Data:", json);
-
-            alert("Excel Imported Successfully");
-
-        };
-
-        reader.readAsArrayBuffer(file);
-
-    });
+portfolio.push({
+symbol: row.Symbol,
+qty: row.Quantity,
+price: row.Price
+});
 
 });
+
+localStorage.setItem("portfolio", JSON.stringify(portfolio));
+
+alert("Portfolio Imported Successfully");
+
+location.reload();
+
+};
+
+reader.readAsArrayBuffer(file);
+
+}
