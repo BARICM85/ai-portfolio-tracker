@@ -1,3 +1,15 @@
+import { showMarketHeatmap } from "./marketHeatmap.js";
+import { showSectorFlow } from "./sectorFlow.js";
+
+async function showDashboard(){
+
+let portfolio = loadPortfolio(activePortfolio);
+
+showMarketHeatmap();
+
+showSectorFlow(portfolio);
+
+}
 async function showDashboard(){
 
 let portfolio=loadPortfolio();
