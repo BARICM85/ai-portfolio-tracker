@@ -63,3 +63,26 @@ html+=`<p style="color:red">${w}</p>`;
 document.getElementById("content").innerHTML=html;
 
 }
+
+import { calculateSectorFlow } from "./sectorFlow.js";
+
+export function showSectorFlow(portfolio){
+
+let sectors =
+calculateSectorFlow(portfolio);
+
+let html="<h2>Sector Allocation</h2>";
+
+for(let s in sectors){
+
+html+=`
+<p>
+${s} : ₹${sectors[s].toFixed(0)}
+</p>
+`;
+
+}
+
+document.getElementById("sectorflow").innerHTML = html;
+
+}
