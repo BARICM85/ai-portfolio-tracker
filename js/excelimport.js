@@ -1,14 +1,10 @@
-function handleExcelUpload(){
+import {loadPortfolio,savePortfolio} from "./storage.js";
+
+export function handleExcelUpload(activePortfolio){
 
 const file=document.getElementById("excelFile").files[0];
 
-if(!file){
-
-alert("Select file");
-
-return;
-
-}
+if(!file) return alert("Select file");
 
 const reader=new FileReader();
 
@@ -22,43 +18,35 @@ const sheet=workbook.Sheets[workbook.SheetNames[0]];
 
 const json=XLSX.utils.sheet_to_json(sheet);
 
-let portfolio=loadPortfolio();
+let portfolio=loadPortfolio(activePortfolio);
 
 json.forEach(row=>{
 
-let script=row.script.toUpperCase();
+const script=row.script?.toUpperCase();
 
-let quantity=parseFloat(row.quantity);
+const qty=parseFloat(row.quantity);
 
-let price=parseFloat(row.price);
+const price=parseFloat(row.price);
 
-let existing=portfolio.find(s=>s.script===script);
-
-if(!existing){
+if(!script||!qty||!price) return;
 
 portfolio.push({
 
 script,
-quantity,
+
+quantity:qty,
+
 averagePrice:price,
-currentPrice:price,
-symbol:script+".NS"
+
+currentPrice:price
 
 });
 
-}
-
-else{
-
-existing.quantity+=quantity;
-
-}
-
 });
 
-savePortfolio(portfolio);
+savePortfolio(activePortfolio,portfolio);
 
-showPortfolio();
+alert("Upload successful");
 
 };
 
