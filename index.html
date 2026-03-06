@@ -2,11 +2,14 @@
 <html>
 
 <head>
-    <title>AI Portfolio Tracker</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:,">
+<title>AI Portfolio Tracker</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:,">
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
@@ -20,7 +23,7 @@
 <button onclick="showAddStock()">Add Stock</button>
 <button onclick="showUpload()">Upload Excel</button>
 <button onclick="showAllocation()">Allocation</button>
-<button onclick="exportPortfolio()">Download Excel</button>
+<button onclick="downloadExcel()">Download Excel</button>
 
 <hr>
 
@@ -32,9 +35,6 @@
 </div>
 
 <div id="content"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script type="module" src="js/app.js"></script>
 
