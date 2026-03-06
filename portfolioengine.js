@@ -1,3 +1,20 @@
+function sectorAllocation(portfolio){
+
+let sectors={};
+
+portfolio.forEach(stock=>{
+
+let value=stock.currentPrice*stock.quantity;
+
+if(!sectors[stock.sector]) sectors[stock.sector]=0;
+
+sectors[stock.sector]+=value;
+
+});
+
+return sectors;
+
+}
 function calculateInvested(portfolio){
 
 let total = 0;
