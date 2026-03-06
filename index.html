@@ -2,14 +2,13 @@
 <html>
 
 <head>
-
 <title>AI Portfolio Tracker</title>
 
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:,">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
@@ -17,21 +16,22 @@
 
 <div class="sidebar">
 
-<h2>Dashboard</h2>
+<h2>AI Portfolio</h2>
 
 <button onclick="showDashboard()">Dashboard</button>
 <button onclick="showPortfolio()">Portfolio</button>
-<button onclick="showAddStock()">Add Stock</button>
-<button onclick="showUpload()">Upload Excel</button>
-<button onclick="showAllocation()">Allocation</button>
-<button onclick="exportPortfolio()">Download Excel</button>
+<button onclick="showAddStock()">Add Trade</button>
 
 <hr>
 
-<h3>Switch Portfolio</h3>
+<h3>Excel</h3>
 
-<button onclick="switchPortfolio('A')">Portfolio A</button>
-<button onclick="switchPortfolio('B')">Portfolio B</button>
+<input type="file" id="excelFile">
+<button onclick="importExcel()">Upload Excel</button>
+
+<hr>
+
+<button onclick="exportPortfolio()">Download Excel</button>
 
 </div>
 
