@@ -1,38 +1,31 @@
-export const sectorMap = {
+export function showSectorFlow(portfolio){
 
-"TCS":"IT",
-"INFY":"IT",
-"HDFCBANK":"BANKING",
-"ICICIBANK":"BANKING",
-"SBIN":"BANKING",
-"RELIANCE":"ENERGY",
-"ONGC":"ENERGY",
-"TATAMOTORS":"AUTO",
-"MARUTI":"AUTO"
+if(!portfolio || portfolio.length===0) return;
 
-};
-
-export function calculateSectorFlow(portfolio){
-
-let sectorTotals={};
+let sectorMap={};
 
 portfolio.forEach(stock=>{
 
-let sector = sectorMap[stock.script] || "OTHER";
+let sector=stock.sector || "Unknown";
 
-let value =
-stock.quantity * stock.currentPrice;
+let value=stock.quantity*stock.currentPrice;
 
-if(!sectorTotals[sector]){
+if(!sectorMap[sector]) sectorMap[sector]=0;
 
-sectorTotals[sector]=0;
-
-}
-
-sectorTotals[sector]+=value;
+sectorMap[sector]+=value;
 
 });
 
-return sectorTotals;
+let html="<div class='card'><h3>Sector Allocation</h3>";
+
+Object.keys(sectorMap).forEach(sector=>{
+
+html+=`<p>${sector}: ₹${sectorMap[sector].toFixed(2)}</p>`;
+
+});
+
+html+="</div>";
+
+document.getElementById("chartArea").innerHTML+=html;
 
 }
