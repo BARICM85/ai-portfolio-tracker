@@ -1,91 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
+import { showMarketHeatmap } from "./marketHeatmap.js";
+import { showSectorFlow } from "./sectorFlow.js";
+async function showDashboard(){
 
-<head>
+let portfolio = loadPortfolio(activePortfolio);
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+let invested = calculateInvested(portfolio);
 
-<title>AI Portfolio Tracker</title>
+let current = calculateCurrent(portfolio);
 
-<link rel="stylesheet" href="style.css">
+let gain = current - invested;
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+let years = 1;
 
-<!-- Excel Library -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+let cagr = calculateCAGR(invested,current,years);
 
-</head>
+let nifty = await fetchNifty();
 
-<body>
+document.getElementById("content").innerHTML = `
 
-<div class="app-container">
+<h2>Portfolio Dashboard</h2>
 
-<!-- SIDEBAR -->
+<div class="card">
+<p>Total Invested: ₹${invested.toFixed(2)}</p>
+<p>Current Value: ₹${current.toFixed(2)}</p>
+<p>Total P/L: ₹${gain.toFixed(2)}</p>
+</div>
 
-<div class="sidebar">
+<div class="card">
+<h3>Performance</h3>
 
-<h2>📊 Portfolio AI</h2>
+<p>CAGR: ${cagr.toFixed(2)}%</p>
 
-<button onclick="showDashboard()">Dashboard</button>
-
-<button onclick="showPortfolio()">Portfolio</button>
-
-<button onclick="showAddStock()">Add Stock</button>
-
-<button onclick="showUpload()">Upload Excel</button>
-
-<button onclick="showAllocation()">Allocation</button>
-
-<button onclick="showBenchmark()">Benchmark</button>
-
-<button onclick="showRisk()">Risk</button>
-
-<button onclick="exportPortfolio()">Download Excel</button>
-
-<hr>
-
-<h3>Switch Portfolio</h3>
-
-<button onclick="switchPortfolio('A')">Portfolio A</button>
-
-<button onclick="switchPortfolio('B')">Portfolio B</button>
-
-<hr>
-
-<button onclick="clearPortfolio('A')">Clear Portfolio A</button>
-
-<button onclick="clearPortfolio('B')">Clear Portfolio B</button>
+<p>Benchmark (Nifty): ${nifty || "-"} </p>
 
 </div>
 
+<div id="chartArea"></div>
 
-<!-- MAIN CONTENT -->
+<div id="heatmap"></div>
 
-<div class="main-content">
+<div id="sectorflow"></div>
 
-<div class="topbar">
+`;
 
-<h1>AI Portfolio Dashboard</h1>
+showMarketHeatmap();
 
-</div>
+showSectorFlow(portfolio);
 
-<div id="content" class="dashboard-content">
+}
 
-<!-- Dashboard loads here -->
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- MODULE SCRIPT -->
-
-<script type="module" src="js/app.js"></script>
-
-</body>
-
-</html>
+window.showDashboard = showDashboard;
+window.showPortfolio = showPortfolio;
+window.showAddStock = showAddStock;
+window.showUpload = showUpload;
+window.showAllocation = showAllocation;
+window.switchPortfolio = switchPortfolio;
+window.exportPortfolio = exportPortfolio;
+window.clearPortfolio = clearPortfolio;
+window.deleteStock = deleteStock;
