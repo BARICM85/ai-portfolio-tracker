@@ -25,3 +25,15 @@ if(dd>maxDrawdown) maxDrawdown=dd;
 return maxDrawdown*100;
 
 }
+
+function sharpeRatio(returns){
+
+let avg = returns.reduce((a,b)=>a+b)/returns.length;
+
+let variance = returns.reduce((a,b)=>a+(b-avg)**2,0)/returns.length;
+
+let std = Math.sqrt(variance);
+
+return std===0 ? 0 : avg/std;
+
+}
