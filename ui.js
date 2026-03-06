@@ -45,3 +45,21 @@ document.getElementById("content").innerHTML=html;
 savePortfolio(portfolio);
 
 }
+
+import { analyzePortfolio } from "./aiAdvisor.js";
+
+export function showAIAdvisor(){
+
+let portfolio=loadPortfolio();
+
+let warnings=analyzePortfolio(portfolio);
+
+let html="<h2>AI Portfolio Advisor</h2>";
+
+warnings.forEach(w=>{
+html+=`<p style="color:red">${w}</p>`;
+});
+
+document.getElementById("content").innerHTML=html;
+
+}
