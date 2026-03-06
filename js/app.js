@@ -1,3 +1,6 @@
+import { loadPortfolio, savePortfolio } from "./storage.js";
+import { calculateInvested, calculateCurrent } from "./portfolioEngine.js";
+import { fetchPrice, fetchNifty } from "./priceService.js";
 import { showMarketHeatmap } from "./marketHeatmap.js";
 import { showSectorFlow } from "./sectorFlow.js";
 async function showDashboard(){
@@ -58,3 +61,4 @@ window.switchPortfolio = switchPortfolio;
 window.exportPortfolio = exportPortfolio;
 window.clearPortfolio = clearPortfolio;
 window.deleteStock = deleteStock;
+
