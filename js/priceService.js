@@ -1,20 +1,26 @@
-const proxy="https://corsproxy.io/?";
+const API_KEY = "Q5XP2PU5953I7S6M";
 
-export async function fetchPrice(symbol){
+export async function fetchPrice(symbol) {
 
-try{
+try {
 
-const url=proxy+encodeURIComponent(
-`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`
-);
+let clean = symbol.replace(".NS","").replace(".BO","");
 
-const res=await fetch(url);
+const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${clean}&apikey=${API_KEY}`;
 
-const data=await res.json();
+const res = await fetch(url);
 
-return data.quoteResponse.result[0].regularMarketPrice;
+const data = await res.json();
 
-}catch(e){
+if(data["Global Quote"]){
+
+return Number(data["Global Quote"]["05. price"]);
+
+}
+
+return null;
+
+} catch(e){
 
 console.log(e);
 return null;
