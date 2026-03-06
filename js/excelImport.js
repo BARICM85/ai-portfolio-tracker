@@ -1,61 +1,39 @@
-import {loadPortfolio,savePortfolio} from "./storage.js";
+export function parseExcel(file){
 
-export function showUpload(){
+return new Promise((resolve)=>{
 
-document.getElementById("content").innerHTML=`
-
-<h2>Upload Excel</h2>
-
-<input type="file" id="excelFile">
-
-<button onclick="processExcel()">Upload</button>
-
-`;
-
-}
-
-window.showUpload=showUpload;
-
-window.processExcel=function(){
-
-let file=document.getElementById("excelFile").files[0];
-
-let reader=new FileReader();
+const reader=new FileReader();
 
 reader.onload=function(e){
 
-let data=new Uint8Array(e.target.result);
+const data=new Uint8Array(e.target.result);
 
-let workbook=XLSX.read(data,{type:'array'});
+const workbook=XLSX.read(data,{type:"array"});
 
-let sheet=workbook.Sheets[workbook.SheetNames[0]];
+const sheet=workbook.Sheets[workbook.SheetNames[0]];
 
-let rows=XLSX.utils.sheet_to_json(sheet);
+const rows=XLSX.utils.sheet_to_json(sheet,{header:1});
 
-let portfolio=loadPortfolio();
+rows.shift();
 
-rows.forEach(r=>{
+const trades=rows.map(r=>({
 
-portfolio.push({
+date:r[0],
+name:r[1],
+symbol:r[2],
+exchange:r[3],
+price:Number(r[4]),
+qty:Number(r[5]),
+side:r[6]
 
-date:r.date,
-name:r["script name"],
-symbol:r["script code"],
-type:r.type,
-price:Number(r.price),
-quantity:Number(r.quantity),
-side:r["buy/sell"]
+}));
 
-});
-
-});
-
-savePortfolio(portfolio);
-
-alert("Excel Imported");
+resolve(trades);
 
 };
 
 reader.readAsArrayBuffer(file);
+
+});
 
 }
