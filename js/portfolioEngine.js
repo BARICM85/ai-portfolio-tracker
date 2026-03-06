@@ -69,3 +69,11 @@ gainPercent
 return analysis;
 
 }
+
+export function calculateCAGR(startValue, endValue, years) {
+
+    if (!startValue || years <= 0) return 0;
+
+    return ((endValue / startValue) ** (1 / years) - 1) * 100;
+
+}
