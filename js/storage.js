@@ -1,25 +1,13 @@
-let activePortfolio = "A";
+export function loadPortfolio(type = "A") {
 
-function getKey() {
-    return activePortfolio === "A" ? "portfolioA" : "portfolioB";
-}
+    const data = localStorage.getItem("portfolio_" + type);
 
-function loadPortfolio() {
-    const data = localStorage.getItem(getKey());
     return data ? JSON.parse(data) : [];
+
 }
 
-function savePortfolio(portfolio) {
-    localStorage.setItem(getKey(), JSON.stringify(portfolio));
-}
+export function savePortfolio(type = "A", portfolio) {
 
-function clearPortfolio() {
-    localStorage.removeItem(getKey());
-}
+    localStorage.setItem("portfolio_" + type, JSON.stringify(portfolio));
 
-function switchPortfolio(type) {
-
-    activePortfolio = type;
-
-    showPortfolio();
 }
