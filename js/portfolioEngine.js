@@ -1,72 +1,31 @@
-function sectorAllocation(portfolio){
+export function calculateInvested(portfolio){
 
-let sectors={};
+let total=0;
 
 portfolio.forEach(stock=>{
-
-let value=stock.currentPrice*stock.quantity;
-
-if(!sectors[stock.sector]) sectors[stock.sector]=0;
-
-sectors[stock.sector]+=value;
-
+total += stock.quantity * stock.averagePrice;
 });
-
-return sectors;
-
-}
-function calculateInvested(portfolio){
-
-let total = 0;
-
-for(let stock of portfolio){
-
-total += stock.averagePrice * stock.quantity;
-
-}
 
 return total;
 
 }
 
-function calculateCurrent(portfolio){
+export function calculateCurrent(portfolio){
 
-let total = 0;
+let total=0;
 
-for(let stock of portfolio){
-
-total += stock.currentPrice * stock.quantity;
-
-}
+portfolio.forEach(stock=>{
+total += stock.quantity * (stock.currentPrice || stock.averagePrice);
+});
 
 return total;
 
 }
 
-function analysePortfolio(portfolio){
+export function calculateCAGR(start,end,years){
 
-let analysis=[];
+if(!start || years<=0) return 0;
 
-for(let stock of portfolio){
-
-let invested = stock.averagePrice * stock.quantity;
-let current = stock.currentPrice * stock.quantity;
-
-let gain = current - invested;
-
-let gainPercent = invested>0 ? gain/invested*100 : 0;
-
-analysis.push({
-
-name:stock.script,
-gain,
-gainPercent
-
-});
+return ((end/start)**(1/years)-1)*100;
 
 }
-
-return analysis;
-
-}
-
