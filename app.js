@@ -101,3 +101,12 @@ a.download="portfolio.csv";
 a.click();
 
 }
+
+window.showDashboard = showDashboard;
+window.showPortfolio = showPortfolio;
+window.showUpload = showUpload;
+window.showAddStock = showAddStock;
+window.switchPortfolio = switchPortfolio;
+window.exportPortfolio = exportPortfolio;
+window.deleteStock = deleteStock;
+window.clearPortfolio = clearPortfolio;
