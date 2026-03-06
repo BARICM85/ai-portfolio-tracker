@@ -1,147 +1,86 @@
 import {loadPortfolio,savePortfolio} from "./storage.js";
-import {calculateInvested,calculateCurrent,calculateCAGR} from "./portfolioEngine.js";
-import {fetchNifty} from "./priceService.js";
-import "./excelImport.js";
+import {calculatePortfolio} from "./portfolioEngine.js";
+import {fetchPrice} from "./priceService.js";
+import {parseExcel} from "./excelImport.js";
+import {drawAllocationChart} from "./charts.js";
 
-let activePortfolio="A";
+let trades=loadPortfolio();
 
-async function showDashboard(){
+window.showDashboard=async function(){
 
-let portfolio=loadPortfolio(activePortfolio);
+const portfolio=calculatePortfolio(trades);
 
-let invested=calculateInvested(portfolio);
+let totalInvested=0;
+let totalValue=0;
 
-let current=calculateCurrent(portfolio);
+for(const s of portfolio){
 
-let gain=current-invested;
+const price=await fetchPrice(s.symbol);
 
-let cagr=calculateCAGR(invested,current,1);
+const value=price*s.qty;
 
-let nifty=await fetchNifty();
+totalInvested+=s.invested;
+totalValue+=value;
+
+}
+
+const pnl=totalValue-totalInvested;
 
 document.getElementById("content").innerHTML=`
 
-<h2>Portfolio Dashboard</h2>
+<h2>Dashboard</h2>
 
-<p>Total Invested : ₹${invested.toFixed(2)}</p>
-<p>Current Value : ₹${current.toFixed(2)}</p>
-<p>Total P/L : ₹${gain.toFixed(2)}</p>
-<p>CAGR : ${cagr.toFixed(2)}%</p>
-<p>Nifty : ${nifty}</p>
+<p>Total Invested : ₹${totalInvested.toFixed(0)}</p>
+<p>Current Value : ₹${totalValue.toFixed(0)}</p>
+<p>P&L : ₹${pnl.toFixed(0)}</p>
 
-<canvas id="chart"></canvas>
+<canvas id="allocationChart"></canvas>
 
 `;
 
-let ctx=document.getElementById("chart");
-
-new Chart(ctx,{
-type:"doughnut",
-data:{
-labels:portfolio.map(p=>p.name),
-datasets:[{
-data:portfolio.map(p=>p.price*p.quantity)
-}]
-}
-});
+drawAllocationChart(portfolio);
 
 }
 
-function showPortfolio(){
+window.showPortfolio=function(){
 
-let portfolio=loadPortfolio(activePortfolio);
+const portfolio=calculatePortfolio(trades);
 
-let html="<h2>Portfolio</h2>";
+let html=`<h2>Portfolio</h2><table>
+<tr>
+<th>Symbol</th>
+<th>Qty</th>
+<th>Invested</th>
+</tr>`;
 
-portfolio.forEach((s,i)=>{
+portfolio.forEach(p=>{
 
-html+=`<p>${s.name} | Qty ${s.quantity} | Price ${s.price}</p>`;
+html+=`<tr>
+<td>${p.symbol}</td>
+<td>${p.qty}</td>
+<td>${p.invested}</td>
+</tr>`;
 
 });
+
+html+="</table>";
 
 document.getElementById("content").innerHTML=html;
 
 }
 
-function showAddStock(){
+window.importExcel=async function(){
 
-document.getElementById("content").innerHTML=`
+const file=document.getElementById("excelFile").files[0];
 
-<h2>Add Stock</h2>
+const newTrades=await parseExcel(file);
 
-<input id="name" placeholder="Name">
-<input id="symbol" placeholder="Symbol">
-<input id="price" placeholder="Price">
-<input id="qty" placeholder="Qty">
+trades=trades.concat(newTrades);
 
-<button onclick="addStock()">Add</button>
+savePortfolio(trades);
 
-`;
+alert("Excel Imported");
 
 }
-
-window.addStock=function(){
-
-let portfolio=loadPortfolio(activePortfolio);
-
-portfolio.push({
-
-name:document.getElementById("name").value,
-symbol:document.getElementById("symbol").value,
-price:Number(document.getElementById("price").value),
-quantity:Number(document.getElementById("qty").value)
-
-});
-
-savePortfolio(portfolio,activePortfolio);
-
-showPortfolio();
-
-}
-
-function switchPortfolio(name){
-
-activePortfolio=name;
-
-showDashboard();
-
-}
-
-function showAllocation(){
-
-let portfolio=loadPortfolio(activePortfolio);
-
-let html="<h2>Allocation</h2>";
-
-portfolio.forEach(s=>{
-
-html+=`<p>${s.name}</p>`;
-
-});
-
-document.getElementById("content").innerHTML=html;
-
-}
-
-function exportPortfolio(){
-
-let portfolio=loadPortfolio(activePortfolio);
-
-let ws=XLSX.utils.json_to_sheet(portfolio);
-
-let wb=XLSX.utils.book_new();
-
-XLSX.utils.book_append_sheet(wb,ws,"Portfolio");
-
-XLSX.writeFile(wb,"portfolio.xlsx");
-
-}
-
-window.showDashboard=showDashboard;
-window.showPortfolio=showPortfolio;
-window.showAddStock=showAddStock;
-window.showAllocation=showAllocation;
-window.switchPortfolio=switchPortfolio;
-window.exportPortfolio=exportPortfolio;
 
 showDashboard();
