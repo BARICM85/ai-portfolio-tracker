@@ -5,28 +5,19 @@ async function showDashboard(){
 
 let portfolio = loadPortfolio(activePortfolio);
 
-showMarketHeatmap();
+let invested = calculateInvested(portfolio);
 
-showSectorFlow(portfolio);
+let current = calculateCurrent(portfolio);
 
-}
-async function showDashboard(){
+let gain = current - invested;
 
-let portfolio=loadPortfolio();
+let years = 1;
 
-let invested=calculateInvested(portfolio);
+let cagr = calculateCAGR(invested,current,years);
 
-let current=calculateCurrent(portfolio);
+let nifty = await fetchNifty();
 
-let gain=current-invested;
-
-let years=1;
-
-let cagr=calculateCAGR(invested,current,years);
-
-let nifty=await fetchNifty();
-
-document.getElementById("content").innerHTML=`
+document.getElementById("content").innerHTML = `
 
 <h2>Portfolio Dashboard</h2>
 
@@ -47,9 +38,18 @@ document.getElementById("content").innerHTML=`
 
 <div id="chartArea"></div>
 
+<div id="heatmap"></div>
+
+<div id="sectorflow"></div>
+
 `;
 
+showMarketHeatmap();
+
+showSectorFlow(portfolio);
+
 }
+
 function showUpload(){
 
 document.getElementById("content").innerHTML=`
