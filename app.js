@@ -65,3 +65,27 @@ savePortfolio(portfolio);
 showPortfolio();
 
 }
+
+function exportPortfolio(){
+
+let portfolio=loadPortfolio();
+
+let csv="Script,Qty,Avg Price\n";
+
+portfolio.forEach(s=>{
+
+csv+=`${s.script},${s.quantity},${s.averagePrice}\n`;
+
+});
+
+let blob=new Blob([csv]);
+
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="portfolio.csv";
+
+a.click();
+
+}
