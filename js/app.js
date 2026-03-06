@@ -1,8 +1,11 @@
 import { loadPortfolio, savePortfolio } from "./storage.js";
-import { calculateInvested, calculateCurrent } from "./portfolioEngine.js";
-import { fetchPrice, fetchNifty } from "./priceService.js";
+import { calculateInvested, calculateCurrent, calculateCAGR } from "./portfolioEngine.js";
+import { fetchNifty } from "./priceService.js";
 import { showMarketHeatmap } from "./marketHeatmap.js";
 import { showSectorFlow } from "./sectorFlow.js";
+
+let activePortfolio = "A";
+
 async function showDashboard(){
 
 let portfolio = loadPortfolio(activePortfolio);
@@ -31,11 +34,8 @@ document.getElementById("content").innerHTML = `
 
 <div class="card">
 <h3>Performance</h3>
-
 <p>CAGR: ${cagr.toFixed(2)}%</p>
-
-<p>Benchmark (Nifty): ${nifty || "-"} </p>
-
+<p>Benchmark (Nifty): ${nifty || "-"}</p>
 </div>
 
 <div id="chartArea"></div>
@@ -52,6 +52,8 @@ showSectorFlow(portfolio);
 
 }
 
+/* expose functions to HTML */
+
 window.showDashboard = showDashboard;
 window.showPortfolio = showPortfolio;
 window.showAddStock = showAddStock;
@@ -61,4 +63,3 @@ window.switchPortfolio = switchPortfolio;
 window.exportPortfolio = exportPortfolio;
 window.clearPortfolio = clearPortfolio;
 window.deleteStock = deleteStock;
-
