@@ -1,34 +1,32 @@
-export function calculateInvested(portfolio){
+export function calculateInvested(p){
 
-return portfolio.reduce((sum,s)=>sum+s.price*s.qty,0)
-
-}
-
-export function calculateCurrent(portfolio){
-
-return portfolio.reduce((sum,s)=>sum+(s.current||0)*s.qty,0)
+return p.reduce((sum,s)=>sum+(s.price*s.qty),0)
 
 }
 
-export function calculateCAGR(invested,current,years){
+export function calculateCurrent(p){
 
-if(invested===0)return 0
-
-return (Math.pow(current/invested,1/years)-1)*100
+return p.reduce((sum,s)=>sum+((s.current||s.price)*s.qty),0)
 
 }
 
-export function getTopMovers(portfolio){
+export function calculateCAGR(i,c,y){
 
-let sorted=[...portfolio]
+if(i===0) return 0
 
-sorted.sort((a,b)=>b.change-a.change)
+return (Math.pow(c/i,1/y)-1)*100
+
+}
+
+export function getTopMovers(p){
+
+let sorted=[...p].sort((a,b)=>b.change-a.change)
 
 return {
 
-gainers:sorted.slice(0,3),
+gainer:sorted[0],
 
-losers:sorted.slice(-3)
+loser:sorted[sorted.length-1]
 
 }
 
