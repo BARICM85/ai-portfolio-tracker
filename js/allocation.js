@@ -1,15 +1,33 @@
-export function showAllocationChart(data){
+export function drawAllocation(portfolio){
 
-let ctx=document.getElementById("allocationChart").getContext("2d")
+let sectors={}
+
+portfolio.forEach(s=>{
+
+let sector=s.sector || "Other"
+
+sectors[sector]=(sectors[sector]||0)+(s.price*s.qty)
+
+})
+
+let ctx=document.getElementById("allocationChart")
 
 new Chart(ctx,{
+
 type:"pie",
+
 data:{
-labels:Object.keys(data),
+
+labels:Object.keys(sectors),
+
 datasets:[{
-data:Object.values(data)
+
+data:Object.values(sectors)
+
 }]
+
 }
+
 })
 
 }
