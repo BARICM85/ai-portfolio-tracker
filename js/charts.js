@@ -1,17 +1,16 @@
-export function drawAllocationChart(data){
+export function drawChart(values){
 
-const ctx=document.getElementById("allocationChart");
-
-const labels=data.map(s=>s.symbol);
-
-const values=data.map(s=>s.invested);
+let ctx=document.getElementById("chart").getContext("2d")
 
 new Chart(ctx,{
-type:"pie",
+type:"line",
 data:{
-labels:labels,
-datasets:[{data:values}]
+labels:["Start","Now"],
+datasets:[{
+label:"Portfolio",
+data:values
+}]
 }
-});
+})
 
 }
