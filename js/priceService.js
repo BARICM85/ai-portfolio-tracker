@@ -1,38 +1,44 @@
-export async function fetchPrice(symbol){
-
-try{
-
-let url=`https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`
-
-let res=await fetch(url)
-
-let data=await res.json()
-
-return data.chart.result[0].meta.regularMarketPrice
-
-}
-catch{
-
-return null
-
-}
-
-}
-
 export async function fetchNifty(){
 
 try{
 
-let url=`https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI`
+let res = await fetch("https://stooq.com/q/l/?s=%5Ensei&i=d")
 
-let res=await fetch(url)
+let text = await res.text()
 
-let data=await res.json()
+let rows = text.split("\n")
 
-return data.chart.result[0].meta.regularMarketPrice
+let cols = rows[1].split(",")
+
+return Number(cols[6])
+
+}catch(e){
+
+console.log(e)
+
+return "N/A"
 
 }
-catch{
+
+}
+
+export async function fetchPrice(symbol){
+
+try{
+
+symbol=symbol.toLowerCase()
+
+let res = await fetch(`https://stooq.com/q/l/?s=${symbol}&i=d`)
+
+let text = await res.text()
+
+let rows = text.split("\n")
+
+let cols = rows[1].split(",")
+
+return Number(cols[6])
+
+}catch{
 
 return null
 
