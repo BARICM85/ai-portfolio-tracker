@@ -1,6 +1,15 @@
-export function showSectorFlow(portfolio){
+export function sectorFlow(portfolio){
 
-document.getElementById("sectorflow").innerHTML=
-"<h3>Sector Flow (AI Model Pending)</h3>"
+let sectors={}
+
+portfolio.forEach(s=>{
+
+let sec=s.sector||"Other"
+
+sectors[sec]=(sectors[sec]||0)+s.change
+
+})
+
+return sectors
 
 }
