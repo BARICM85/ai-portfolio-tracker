@@ -1,15 +1,17 @@
-export function sectorFlow(portfolio){
+export function sectorFlow(p){
 
-let sectors={}
+let map={}
 
-portfolio.forEach(s=>{
+p.forEach(s=>{
 
 let sec=s.sector||"Other"
 
-sectors[sec]=(sectors[sec]||0)+s.change
+if(!map[sec]) map[sec]=0
+
+map[sec]+=s.change
 
 })
 
-return sectors
+return map
 
 }
