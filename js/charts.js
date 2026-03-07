@@ -1,8 +1,6 @@
-export function drawNiftyChart(data){
+export function drawLine(id,data){
 
-let ctx=document.getElementById("niftyChart")
-
-new Chart(ctx,{
+new Chart(document.getElementById(id),{
 
 type:"line",
 
@@ -10,17 +8,7 @@ data:{
 
 labels:data.map((_,i)=>i),
 
-datasets:[{
-
-label:"Nifty",
-
-data:data,
-
-borderColor:"blue",
-
-fill:false
-
-}]
+datasets:[{data:data}]
 
 }
 
