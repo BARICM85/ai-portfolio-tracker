@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:,">
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 </head>
 
@@ -16,22 +16,24 @@
 
 <div class="sidebar">
 
-<h2>AI Portfolio</h2>
+<h2>Portfolio</h2>
 
 <button onclick="showDashboard()">Dashboard</button>
 <button onclick="showPortfolio()">Portfolio</button>
-<button onclick="showAddStock()">Add Trade</button>
-
-<hr>
-
-<h3>Excel</h3>
-
-<input type="file" id="excelFile">
-<button onclick="importExcel()">Upload Excel</button>
-
-<hr>
+<button onclick="showAddStock()">Add Stock</button>
+<button onclick="showUpload()">Upload Excel</button>
+<button onclick="showAllocation()">Allocation</button>
 
 <button onclick="exportPortfolio()">Download Excel</button>
+
+<hr>
+
+<h3>Portfolio Switch</h3>
+
+<button onclick="switchPortfolio('A')">Portfolio A</button>
+<button onclick="switchPortfolio('B')">Portfolio B</button>
+
+<button onclick="clearPortfolio()">Delete Portfolio</button>
 
 </div>
 
