@@ -1,16 +1,29 @@
-export function drawChart(values){
+export function drawNiftyChart(data){
 
-let ctx=document.getElementById("chart").getContext("2d")
+let ctx=document.getElementById("niftyChart")
 
 new Chart(ctx,{
+
 type:"line",
+
 data:{
-labels:["Start","Now"],
+
+labels:data.map((_,i)=>i),
+
 datasets:[{
-label:"Portfolio",
-data:values
+
+label:"Nifty",
+
+data:data,
+
+borderColor:"blue",
+
+fill:false
+
 }]
+
 }
+
 })
 
 }
