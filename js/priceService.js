@@ -1,29 +1,40 @@
-const API_KEY = "Q5XP2PU5953I7S6M";
+export async function fetchPrice(symbol){
 
-export async function fetchPrice(symbol) {
+try{
 
-try {
+let url=`https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`
 
-let clean = symbol.replace(".NS","").replace(".BO","");
+let res=await fetch(url)
 
-const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${clean}&apikey=${API_KEY}`;
+let data=await res.json()
 
-const res = await fetch(url);
+return data.chart.result[0].meta.regularMarketPrice
 
-const data = await res.json();
+}
+catch{
 
-if(data["Global Quote"]){
-
-return Number(data["Global Quote"]["05. price"]);
+return null
 
 }
 
-return null;
+}
 
-} catch(e){
+export async function fetchNifty(){
 
-console.log(e);
-return null;
+try{
+
+let url=`https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI`
+
+let res=await fetch(url)
+
+let data=await res.json()
+
+return data.chart.result[0].meta.regularMarketPrice
+
+}
+catch{
+
+return null
 
 }
 
