@@ -1,9 +1,11 @@
-import "./excelImport.js"
+
 import {loadPortfolio,savePortfolio,switchPortfolio,clearPortfolio} from "./storage.js"
 import {calculateInvested,calculateCurrent,calculateCAGR} from "./portfolioEngine.js"
 import {fetchPrice,fetchNifty} from "./priceService.js"
 import {showMarketHeatmap} from "./marketHeatmap.js"
 import {showSectorFlow} from "./sectorFlow.js"
+
+import "./excelImport.js"
 
 window.showDashboard=async function(){
 
