@@ -1,46 +1,36 @@
-const proxy="https://api.allorigins.win/raw?url="
+export async function fetchPrice(symbol){
+
+try{
+
+let r=await fetch("https://api.allorigins.win/raw?url=https://stooq.com/q/l/?s="+symbol+"&i=d")
+
+let t=await r.text()
+
+let price=t.split(",")[6]
+
+return Number(price)
+
+}catch{
+
+return 0
+
+}
+
+}
 
 export async function fetchNifty(){
 
 try{
 
-let url=encodeURIComponent(
-"https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI"
-)
+let r=await fetch("https://api.allorigins.win/raw?url=https://stooq.com/q/l/?s=%5Ensei&i=d")
 
-let res=await fetch(proxy+url)
+let t=await r.text()
 
-let data=await res.json()
-
-return data.chart.result[0].meta.regularMarketPrice
-
-}catch(e){
-
-console.log(e)
-
-return "N/A"
-
-}
-
-}
-
-export async function fetchPrice(symbol){
-
-try{
-
-let url=encodeURIComponent(
-`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`
-)
-
-let res=await fetch(proxy+url)
-
-let data=await res.json()
-
-return data.quoteResponse.result[0].regularMarketPrice
+return t.split(",")[6]
 
 }catch{
 
-return null
+return "N/A"
 
 }
 
