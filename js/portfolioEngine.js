@@ -1,33 +1,29 @@
-export function calculatePortfolio(trades){
+export function calculateInvested(portfolio){
 
-const map={};
+let total=0
 
-trades.forEach(t=>{
+portfolio.forEach(s=>{
+total+=s.price*s.qty
+})
 
-if(!map[t.symbol]){
-
-map[t.symbol]={
-symbol:t.symbol,
-name:t.name,
-qty:0,
-invested:0
-};
+return total
 
 }
 
-if(t.side==="BUY"){
+export function calculateCurrent(portfolio){
 
-map[t.symbol].qty+=t.qty;
-map[t.symbol].invested+=t.qty*t.price;
+let total=0
 
-}else{
+portfolio.forEach(s=>{
+total+=s.price*s.qty
+})
 
-map[t.symbol].qty-=t.qty;
+return total
 
 }
 
-});
+export function calculateCAGR(start,end,years){
 
-return Object.values(map);
+return (Math.pow(end/start,1/years)-1)*100
 
 }
