@@ -1,39 +1,45 @@
-export function parseExcel(file){
+import { loadPortfolio,savePortfolio } from "./storage.js"
 
-return new Promise((resolve)=>{
+window.handleExcelUpload=function(){
 
-const reader=new FileReader();
+let file=document.getElementById("excelFile").files[0]
+
+let reader=new FileReader()
 
 reader.onload=function(e){
 
-const data=new Uint8Array(e.target.result);
+let data=new Uint8Array(e.target.result)
 
-const workbook=XLSX.read(data,{type:"array"});
+let workbook=XLSX.read(data,{type:"array"})
 
-const sheet=workbook.Sheets[workbook.SheetNames[0]];
+let sheet=workbook.Sheets[workbook.SheetNames[0]]
 
-const rows=XLSX.utils.sheet_to_json(sheet,{header:1});
+let rows=XLSX.utils.sheet_to_json(sheet)
 
-rows.shift();
+let portfolio=loadPortfolio()
 
-const trades=rows.map(r=>({
+rows.forEach(r=>{
 
-date:r[0],
-name:r[1],
-symbol:r[2],
-exchange:r[3],
-price:Number(r[4]),
-qty:Number(r[5]),
-side:r[6]
+portfolio.push({
 
-}));
+date:r.Date,
+name:r["Script Name"],
+code:r["Script Code"],
+type:r.Type,
+price:Number(r.Price),
+qty:Number(r.Quantity),
+side:r["Buy/Sell"]
 
-resolve(trades);
+})
 
-};
+})
 
-reader.readAsArrayBuffer(file);
+savePortfolio(portfolio)
 
-});
+alert("Excel imported")
+
+}
+
+reader.readAsArrayBuffer(file)
 
 }
