@@ -1,24 +1,21 @@
-export function drawHeatmap(portfolio){
+export function drawHeatmap(p){
 
-let html=""
+let h=document.getElementById("heatmap")
 
-portfolio.forEach(s=>{
+h.innerHTML=""
 
-let color=s.change>=0?"green":"red"
+p.forEach(s=>{
 
-html+=`<div style="background:${color};
-padding:10px;
-margin:5px;
-color:white;
-display:inline-block">
+let div=document.createElement("div")
 
-${s.name}<br>
-${s.change.toFixed(2)}%
+div.className="heat"
 
-</div>`
+div.innerText=s.name
+
+div.style.background=s.change>0?"green":"red"
+
+h.appendChild(div)
 
 })
-
-document.getElementById("heatmap").innerHTML=html
 
 }
