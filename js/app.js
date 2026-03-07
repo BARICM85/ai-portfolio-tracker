@@ -47,6 +47,49 @@ showSectorFlow(portfolio)
 
 }
 
+window.showAddStock=function(){
+
+document.getElementById("content").innerHTML=`
+
+<h2>Add Stock</h2>
+
+<input id="name" placeholder="Stock Name">
+
+<input id="code" placeholder="Symbol">
+
+<input id="price" placeholder="Buy Price">
+
+<input id="qty" placeholder="Quantity">
+
+<button onclick="addStock()">Add</button>
+
+`
+
+}
+
+window.addStock=function(){
+
+let portfolio=loadPortfolio()
+
+let stock={
+
+name:document.getElementById("name").value,
+code:document.getElementById("code").value,
+price:Number(document.getElementById("price").value),
+qty:Number(document.getElementById("qty").value)
+
+}
+
+portfolio.push(stock)
+
+savePortfolio(portfolio)
+
+alert("Stock Added")
+
+showPortfolio()
+
+}
+
 window.showUpload=function(){
 
 document.getElementById("content").innerHTML=`
