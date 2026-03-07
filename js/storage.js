@@ -1,34 +1,30 @@
-export function getActivePortfolio(){
-return localStorage.getItem("activePortfolio") || "A"
-}
+let currentPortfolio="A"
 
-export function switchPortfolio(name){
-localStorage.setItem("activePortfolio",name)
+export function switchPortfolio(p){
+
+currentPortfolio=p
+
 location.reload()
+
 }
 
 export function loadPortfolio(){
 
-let name=getActivePortfolio()
-
-let data=localStorage.getItem("portfolio_"+name)
+let data=localStorage.getItem("portfolio_"+currentPortfolio)
 
 return data?JSON.parse(data):[]
+
 }
 
 export function savePortfolio(data){
 
-let name=getActivePortfolio()
-
-localStorage.setItem("portfolio_"+name,JSON.stringify(data))
+localStorage.setItem("portfolio_"+currentPortfolio,JSON.stringify(data))
 
 }
 
 export function clearPortfolio(){
 
-let name=getActivePortfolio()
-
-localStorage.removeItem("portfolio_"+name)
+localStorage.removeItem("portfolio_"+currentPortfolio)
 
 location.reload()
 
