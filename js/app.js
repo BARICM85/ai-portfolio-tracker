@@ -1,86 +1,129 @@
-import {loadPortfolio,savePortfolio} from "./storage.js";
-import {calculatePortfolio} from "./portfolioEngine.js";
-import {fetchPrice} from "./priceService.js";
-import {parseExcel} from "./excelImport.js";
-import {drawAllocationChart} from "./charts.js";
-
-let trades=loadPortfolio();
+import {loadPortfolio,savePortfolio,switchPortfolio,clearPortfolio} from "./storage.js"
+import {calculateInvested,calculateCurrent,calculateCAGR} from "./portfolioEngine.js"
+import {fetchPrice,fetchNifty} from "./priceService.js"
+import {showMarketHeatmap} from "./marketHeatmap.js"
+import {showSectorFlow} from "./sectorFlow.js"
 
 window.showDashboard=async function(){
 
-const portfolio=calculatePortfolio(trades);
+let portfolio=loadPortfolio()
 
-let totalInvested=0;
-let totalValue=0;
+let invested=calculateInvested(portfolio)
 
-for(const s of portfolio){
+let current=calculateCurrent(portfolio)
 
-const price=await fetchPrice(s.symbol);
+let gain=current-invested
 
-const value=price*s.qty;
+let cagr=calculateCAGR(invested,current,1)
 
-totalInvested+=s.invested;
-totalValue+=value;
-
-}
-
-const pnl=totalValue-totalInvested;
+let nifty=await fetchNifty()
 
 document.getElementById("content").innerHTML=`
 
 <h2>Dashboard</h2>
 
-<p>Total Invested : ₹${totalInvested.toFixed(0)}</p>
-<p>Current Value : ₹${totalValue.toFixed(0)}</p>
-<p>P&L : ₹${pnl.toFixed(0)}</p>
+<div class="card">
+<p>Invested ₹${invested}</p>
+<p>Current ₹${current}</p>
+<p>P/L ₹${gain}</p>
+</div>
 
-<canvas id="allocationChart"></canvas>
+<div class="card">
+<p>CAGR ${cagr.toFixed(2)}%</p>
+<p>Nifty ${nifty}</p>
+</div>
 
-`;
+<canvas id="chart"></canvas>
 
-drawAllocationChart(portfolio);
+<div id="heatmap"></div>
+
+<div id="sectorflow"></div>
+
+`
+
+showMarketHeatmap()
+
+showSectorFlow(portfolio)
+
+}
+
+window.showUpload=function(){
+
+document.getElementById("content").innerHTML=`
+
+<h2>Upload Excel</h2>
+
+<input type="file" id="excelFile">
+
+<button onclick="handleExcelUpload()">Upload</button>
+
+`
 
 }
 
 window.showPortfolio=function(){
 
-const portfolio=calculatePortfolio(trades);
+let portfolio=loadPortfolio()
 
-let html=`<h2>Portfolio</h2><table>
-<tr>
-<th>Symbol</th>
-<th>Qty</th>
-<th>Invested</th>
-</tr>`;
+let html="<h2>Portfolio</h2>"
 
-portfolio.forEach(p=>{
+portfolio.forEach((s,i)=>{
 
-html+=`<tr>
-<td>${p.symbol}</td>
-<td>${p.qty}</td>
-<td>${p.invested}</td>
-</tr>`;
+html+=`
 
-});
+<div>
 
-html+="</table>";
+${s.name} | Qty ${s.qty} | Price ${s.price}
 
-document.getElementById("content").innerHTML=html;
+<button onclick="deleteStock(${i})">Delete</button>
 
-}
+</div>
 
-window.importExcel=async function(){
+`
 
-const file=document.getElementById("excelFile").files[0];
+})
 
-const newTrades=await parseExcel(file);
-
-trades=trades.concat(newTrades);
-
-savePortfolio(trades);
-
-alert("Excel Imported");
+document.getElementById("content").innerHTML=html
 
 }
 
-showDashboard();
+window.deleteStock=function(i){
+
+let p=loadPortfolio()
+
+p.splice(i,1)
+
+savePortfolio(p)
+
+showPortfolio()
+
+}
+
+window.exportPortfolio=function(){
+
+let p=loadPortfolio()
+
+let csv="Name,Price,Qty\n"
+
+p.forEach(s=>{
+
+csv+=`${s.name},${s.price},${s.qty}\n`
+
+})
+
+let blob=new Blob([csv])
+
+let a=document.createElement("a")
+
+a.href=URL.createObjectURL(blob)
+
+a.download="portfolio.csv"
+
+a.click()
+
+}
+
+window.switchPortfolio=switchPortfolio
+window.clearPortfolio=clearPortfolio
+
+showDashboard()
