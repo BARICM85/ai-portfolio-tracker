@@ -2,45 +2,94 @@
 <html>
 
 <head>
+
 <title>AI Portfolio Tracker</title>
 
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:,">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 </head>
 
 <body>
 
-<div class="sidebar">
+<h1>AI Portfolio Tracker</h1>
 
-<h2>Portfolio</h2>
+<div class="menu">
 
 <button onclick="showDashboard()">Dashboard</button>
-<button onclick="showPortfolio()">Portfolio</button>
+
 <button onclick="showAddStock()">Add Stock</button>
-<button onclick="showUpload()">Upload Excel</button>
-<button onclick="showAllocation()">Allocation</button>
 
-<button onclick="exportPortfolio()">Download Excel</button>
-
-<hr>
-
-<h3>Portfolio Switch</h3>
+<button onclick="showUpload()">Excel Upload</button>
 
 <button onclick="switchPortfolio('A')">Portfolio A</button>
+
 <button onclick="switchPortfolio('B')">Portfolio B</button>
 
 <button onclick="clearPortfolio()">Delete Portfolio</button>
 
 </div>
 
-<div id="content"></div>
+<div id="content">
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<h3>Nifty</h3>
+<div id="nifty">Loading...</div>
+
+<h3>Invested</h3>
+<div id="invested"></div>
+
+<h3>Current</h3>
+<div id="current"></div>
+
+<h3>CAGR</h3>
+<div id="cagr"></div>
+
+<h3>Top Movers</h3>
+<div id="movers"></div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+<th>Qty</th>
+<th>Buy</th>
+<th>Current</th>
+<th>Change</th>
+<th>AI</th>
+<th>Delete</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tableBody"></tbody>
+
+</table>
+
+<h3>Nifty Chart</h3>
+
+<canvas id="niftyChart"></canvas>
+
+<h3>Sector Allocation</h3>
+
+<canvas id="sectorChart"></canvas>
+
+<h3>Portfolio Heatmap</h3>
+
+<div id="heatmap"></div>
+
+</div>
+
+<input type="file" id="excelFile">
+
 <script type="module" src="js/app.js"></script>
 
 </body>
+
 </html>
