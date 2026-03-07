@@ -1,3 +1,4 @@
+import "./excelImport.js"
 import {loadPortfolio,savePortfolio,switchPortfolio,clearPortfolio} from "./storage.js"
 import {calculateInvested,calculateCurrent,calculateCAGR} from "./portfolioEngine.js"
 import {fetchPrice,fetchNifty} from "./priceService.js"
