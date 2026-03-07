@@ -1,8 +1,16 @@
-import { loadPortfolio,savePortfolio } from "./storage.js"
+import {loadPortfolio,savePortfolio} from "./storage.js"
 
-window.handleExcelUpload=function(){
+function handleExcelUpload(){
 
 let file=document.getElementById("excelFile").files[0]
+
+if(!file){
+
+alert("Select Excel file")
+
+return
+
+}
 
 let reader=new FileReader()
 
@@ -36,10 +44,14 @@ side:r["Buy/Sell"]
 
 savePortfolio(portfolio)
 
-alert("Excel imported")
+alert("Excel Imported")
+
+location.reload()
 
 }
 
 reader.readAsArrayBuffer(file)
 
 }
+
+window.handleExcelUpload=handleExcelUpload
