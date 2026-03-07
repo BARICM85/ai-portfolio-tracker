@@ -1,47 +1,48 @@
 body{
+
 font-family:Arial;
-margin:0;
-display:flex;
-background:#f2f4f8;
+margin:20px;
+
 }
 
-.sidebar{
-width:220px;
-background:#1f2937;
-color:white;
-height:100vh;
-padding:20px;
-}
+.menu button{
 
-.sidebar button{
-width:100%;
-margin:5px 0;
-padding:10px;
-border:none;
-background:#374151;
-color:white;
-cursor:pointer;
-}
+margin:5px;
+padding:8px;
 
-.sidebar button:hover{
-background:#4b5563;
-}
-
-#content{
-flex:1;
-padding:25px;
 }
 
 table{
+
 width:100%;
+margin-top:20px;
 border-collapse:collapse;
+
 }
 
-td,th{
-border:1px solid #ddd;
+th,td{
+
+border:1px solid #ccc;
 padding:8px;
+text-align:center;
+
 }
 
-canvas{
-max-width:600px;
+#heatmap{
+
+display:flex;
+flex-wrap:wrap;
+
+}
+
+.heat{
+
+width:80px;
+height:60px;
+margin:5px;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+
 }
