@@ -15,7 +15,6 @@ padding:8px;
 table{
 
 width:100%;
-margin-top:20px;
 border-collapse:collapse;
 
 }
@@ -37,7 +36,7 @@ flex-wrap:wrap;
 
 .heat{
 
-width:80px;
+width:90px;
 height:60px;
 margin:5px;
 color:white;
